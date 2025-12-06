@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Iloilo Café Guide — Map</title>
   <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -29,73 +32,68 @@
     </aside>
 
     <section class="map-wrap">
-      <div id="mapCard" class="map-card" aria-label="Illustrated map of Iloilo">
-        <!-- Cute illustrated SVG map (cafe aesthetic) -->
-        <svg id="iloiloMap" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <radialGradient id="latteGrad" cx="30%" cy="20%">
-              <stop offset="0%" stop-color="#fff9f6"/>
-              <stop offset="100%" stop-color="#f4e8dc"/>
-            </radialGradient>
-            <linearGradient id="areaGrad1" x1="0" x2="1">
-              <stop offset="0" stop-color="#f7dec4"/>
-              <stop offset="1" stop-color="#f4cfa8"/>
-            </linearGradient>
-            <linearGradient id="areaGrad2" x1="0" x2="1">
-              <stop offset="0" stop-color="#efe7d9"/>
-              <stop offset="1" stop-color="#f6eadf"/>
-            </linearGradient>
-            <filter id="softBlur"><feGaussianBlur stdDeviation="6" /></filter>
-          </defs>
-
-          <!-- background -->
-          <rect x="0" y="0" width="100%" height="100%" rx="20" fill="url(#latteGrad)"/>
-
-          <!-- stylized neighborhood shapes -->
-          <g class="areas" stroke="#e1c7ad" stroke-width="3" filter="url(#softBlur)">
-            <!-- Mandurriao -->
-            <path id="svg-mandurriao" d="M120 90 C210 10, 370 20, 420 110 C460 190, 360 230, 250 210 C160 195,110 140,120 100 Z" fill="url(#areaGrad1)"/>
-            <!-- Jaro -->
-            <path id="svg-jaro" d="M450 160 C540 120, 680 140, 740 230 C780 290,700 340,600 330 C520 320,480 220,450 180 Z" fill="url(#areaGrad2)"/>
-            <!-- La Paz -->
-            <path id="svg-lapaz" d="M160 280 C220 240,320 260,360 320 C390 370,280 390,210 360 C160 335,140 300,160 280 Z" fill="#fbf1e6"/>
-          </g>
-
-          <!-- small landmarks & icons -->
-          <g class="landmarks" fill="#c47b44">
-            <circle cx="320" cy="120" r="5"/>
-            <circle cx="620" cy="240" r="5"/>
-            <circle cx="240" cy="320" r="5"/>
-          </g>
-
-          <!-- labels -->
-          <text x="260" y="80" class="map-label">Mandurriao</text>
-          <text x="630" y="230" class="map-label">Jaro</text>
-          <text x="220" y="300" class="map-label">La Paz</text>
-
-          <!-- latte foam decorative swirls -->
-          <path d="M540 50 C560 22,640 10,740 40" stroke="#fff" stroke-opacity="0.25" stroke-width="12" fill="none" stroke-linecap="round"/>
-        </svg>
-
-        <!-- HTML hotspots for accessibility and easier interactions -->
-        <button class="hotspot" data-area="mandurriao" aria-label="Mandurriao" style="--x:270px; --y:80px">Mandurriao</button>
-        <button class="hotspot" data-area="jaro" aria-label="Jaro" style="--x:630px; --y:230px">Jaro</button>
-        <button class="hotspot" data-area="lapaz" aria-label="La Paz" style="--x:220px; --y:310px">La Paz</button>
-      </div>
-
-      <!-- popup overlay listing cafes -->
-      <div id="areaPopup" class="popup" aria-hidden="true">
-        <div class="popup-card" role="dialog" aria-modal="true">
-          <button id="popupClose" class="close" aria-label="Close">×</button>
-          <h3 id="popupTitle">Area</h3>
-          <div id="popupList" class="popup-list"></div>
-        </div>
-      </div>
+      <div id="map"></div>
+      <div class="tooltip-card" id="tooltip"></div>
     </section>
-  </main>
+    </main>
 
-  <footer class="site-foot">Made with ☕ — Iloilo Café Guide</footer>
+    <footer class="site-foot">Made with ☕ — Iloilo Café Guide</footer>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([10.7202, 122.5621], 13); // Iloilo City center
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Café data with coordinates
+        const cafes = [
+            {
+                name: "Don Macchiatos",
+                desc: "Jaro, Iloilo City",
+                img: "images/DonMacchiatos.jpg",
+                coords: [10.71498, 122.56223]
+            },
+            {
+                name: "Chaithentic Jaro",
+                desc: "Jaro, Iloilo City",
+                img: "images/Chaithentic.jpg",
+                coords: [10.71627, 122.56291]
+            }
+        ];
+
+        const tooltip = document.getElementById('tooltip');
+
+        // Create markers and hover tooltips
+        cafes.forEach(cafe => {
+            const marker = L.marker(cafe.coords).addTo(map);
+
+            marker.on('mouseover', (e) => {
+                const point = map.latLngToContainerPoint(e.latlng);
+                tooltip.style.left = point.x + 25 + 'px';
+                tooltip.style.top = point.y - 20 + 'px';
+
+                tooltip.innerHTML = `
+                    <img src="${cafe.img}" />
+                    <h4>${cafe.name}</h4>
+                    <p>${cafe.desc}</p>
+                `;
+
+                tooltip.style.display = 'block';
+            });
+
+            marker.on('mouseout', () => {
+                tooltip.style.display = 'none';
+            });
+
+            // This is the link to the separate cafe detail page
+            marker.on('click', () => {
+                window.location.href = `cafes.html?name=${encodeURIComponent(cafe.name)}`;
+            });
+        });
+    </script>
 </body>
 </html>
