@@ -20,7 +20,7 @@
   <main class="page">
     <aside class="info-card">
       <h2>Discover cafés in Iloilo City</h2>
-      <p>Hover the map areas to see a float effect. Click an area to zoom and list nearby cafés — click a café to open its detail page with reviews and menu. Menu items reveal ingredients on hover.</p>
+      <p>Hover the map areas to see a float effect. Click an area to zoom and list nearby Cafés — click a Café to open its detail page with reviews and menu. Menu items reveal ingredients on hover.</p>
 
       <div class="meta">
         <h4>Socials</h4>
@@ -59,9 +59,27 @@
             },
             {
                 name: "Chaithentic Jaro",
-                desc: "Jaro, Iloilo City",
+                desc: "San Jose St., Jaro, Iloilo City",
                 img: "images/Chaithentic.jpg",
                 coords: [10.71627, 122.56291]
+            },
+            {
+                name: "Kkopi.Tea E Lopez Jaro",
+                desc: "E Lopez St., Jaro, Iloilo City",
+                img: "images/Kkopi_Tea.jpg",
+                coords: [10.71739, 122.56186]
+            },
+            {
+                name: "bean there. Coffee",
+                desc: "E Lopez St., Jaro, Iloilo City",
+                img: "images/bean_there.jpg",
+                coords: [10.71764, 122.56170]
+            },
+            {
+                name: "Yelle Cafe",
+                desc: "Del Carmen St., Jaro, Iloilo City",
+                img: "images/Yelle.jpg",
+                coords: [10.71740, 122.56220]
             }
         ];
 
@@ -73,8 +91,8 @@
 
             marker.on('mouseover', (e) => {
                 const point = map.latLngToContainerPoint(e.latlng);
-                tooltip.style.left = point.x + 25 + 'px';
-                tooltip.style.top = point.y - 20 + 'px';
+                tooltip.style.left = point.x + 350 + 'px';
+                tooltip.style.top = point.y - 5 + 'px';
 
                 tooltip.innerHTML = `
                     <img src="${cafe.img}" />
