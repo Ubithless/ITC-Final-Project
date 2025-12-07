@@ -53,32 +53,37 @@
         const cafes = [
             {
                 name: "Don Macchiatos",
+                slug: "DonMacchiatos",
                 desc: "Jaro, Iloilo City",
-                img: "images/DonMacchiatos.jpg",
+                img: "images/DonMacchiatos/DonMacchiatos.jpg",
                 coords: [10.71498, 122.56223]
             },
             {
                 name: "Chaithentic Jaro",
                 desc: "San Jose St., Jaro, Iloilo City",
-                img: "images/Chaithentic.jpg",
+                slug: "Chaithentic",
+                img: "images/Chaithentic/Chaithentic.jpg",
                 coords: [10.71627, 122.56291]
             },
             {
                 name: "Kkopi.Tea E Lopez Jaro",
                 desc: "E Lopez St., Jaro, Iloilo City",
-                img: "images/Kkopi_Tea.jpg",
+                slug: "Kkopi.Tea",
+                img: "images/Kkopi.tea/Kkopi.Tea.jpg",
                 coords: [10.71739, 122.56186]
             },
             {
                 name: "bean there. Coffee",
                 desc: "E Lopez St., Jaro, Iloilo City",
-                img: "images/bean_there.jpg",
+                slug: "beanthere.",
+                img: "images/beanthere./beanthere.jpg",
                 coords: [10.71764, 122.56170]
             },
             {
                 name: "Yelle Cafe",
                 desc: "Del Carmen St., Jaro, Iloilo City",
-                img: "images/Yelle.jpg",
+                slug: "Yellecafe",
+                img: "images/Yellecafe/Yellecafe.jpg",
                 coords: [10.71740, 122.56220]
             }
         ];
@@ -109,7 +114,7 @@
 
             // This is the link to the separate cafe detail page
             marker.on('click', () => {
-                window.location.href = `cafes.html?name=${encodeURIComponent(cafe.name)}`;
+                window.location.href =`cafes/${cafe.slug}.html`;
             });
         });
     </script>

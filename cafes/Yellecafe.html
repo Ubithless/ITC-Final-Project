@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Café Info</title>
+<link rel="stylesheet" href="../style.css">
+
+<style>
+/* -------- BASIC PAGE -------- */
+body {
+  font-family: "Poppins", sans-serif;
+  background: #fff7ec;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+h1 {
+  color: #6b4b30;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.tabs button {
+  padding: 10px 18px;
+  background: #d8b892;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.tabs button.active {
+  background: #6b4b30;
+  color: white;
+}
+
+/* -------- MENU CARDS -------- */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.menu-card {
+  background: #fffdf8;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid #e1c7a8;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.menu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+}
+
+.ingredients {
+  font-size: 13px;
+  margin-top: 6px;
+  display: none;
+  color: #6b4b30;
+}
+
+/* -------- REVIEW FORM -------- */
+review-form input,
+.review-form textarea {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #c9b090;
+  background: #fffaf2;
+  font-size: 15px;
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.star-input span {
+  font-size: 26px;
+  cursor: pointer;
+  color: #c9c9c9;
+  transition: 0.15s;
+}
+
+.star-input span.active {
+  color: #ffb300;
+  transform: scale(1.2);
+}
+
+.addReviewBtn {
+  background: #8b5e3b;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* -------- REVIEW CARDS -------- */
+.review-card {
+  background: #fff9ef;
+  padding: 15px;
+  border-radius: 14px;
+  border: 1px solid #e4c9a8;
+  margin-top: 10px;
+}
+
+.review-card button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.editBtn { background: #d8a35e; }
+.deleteBtn { background: #d25b5b; }
+.saveBtn { background: #68af68; }
+.cancelBtn { background: #9b9b9b; }
+
+/* Sorting dropdown */
+.sortArea {
+  margin: 10px 0;
+  text-align: right;
+}
+
+.sortArea select {
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid #c9b090;
+  background: #fffaf2;
+}
+</style>
+</head>
+
+<body>
+
+    <a href="../index.html" class="back-main-btn">
+    <i class="fa fa-arrow-left"></i> Back to Main Page
+</a>
+
+
+<div class="container">
+  <h1 id="cafeName">Yelle Cafe</h1>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="info">Info</button>
+    <button class="tab-btn" data-tab="menu">Menu</button>
+    <button class="tab-btn" data-tab="reviews">Reviews</button>
+  </div>
+
+  <!--------------- TAB: INFO ------------------>
+  <div id="info" class="tab-pane">
+    <h2>About this Café</h2>
+    <p>This café is known for great ambiance and coffee.</p>
+  </div>
+
+  <!--------------- TAB: MENU ------------------>
+  <div id="menu" class="tab-pane" style="display:none;">
+    <h2>Menu</h2>
+
+    <div class="menu-grid">
+
+      <div class="menu-card">
+        <h3>Iced Latte</h3>
+        <p>₱140</p>
+        <div class="ingredients">Ingredients: Espresso, Milk</div>
+      </div>
+
+      <div class="menu-card">
+        <h3>Caramel Macchiato</h3>
+        <p>₱160</p>
+        <div class="ingredients">Ingredients: Espresso, Milk, Caramel</div>
+      </div>
+
+      <div class="menu-card">
+        <h3>Mocha</h3>
+        <p>₱155</p>
+        <div class="ingredients">Ingredients: Espresso, Chocolate, Milk</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!--------------- TAB: REVIEWS ------------------>
+  <div id="reviews" class="tab-pane" style="display:none;">
+
+    <!-- Sorting -->
+    <div class="sortArea">
+      <select id="sortReviews">
+        <option value="latest">Sort: Latest</option>
+        <option value="oldest">Oldest</option>
+        <option value="highest">Highest Rating</option>
+        <option value="lowest">Lowest Rating</option>
+      </select>
+    </div>
+
+    <!-- Add Review Form -->
+    <form id="reviewForm" class="review-form">
+      <input type="text" id="reviewer" placeholder="Your Name" required>
+
+      <div class="star-input">
+        <span data-star="1">★</span>
+        <span data-star="2">★</span>
+        <span data-star="3">★</span>
+        <span data-star="4">★</span>
+        <span data-star="5">★</span>
+      </div>
+      <input type="hidden" id="rating">
+
+      <textarea id="reviewText" placeholder="Your review..." required></textarea>
+      <button class="addReviewBtn">Post Review</button>
+    </form>
+
+    <div id="reviewsList"></div>
+
+  </div>
+</div>
+
+<script>
+// ---------------- TAB SWITCHING ----------------
+const tabBtns = document.querySelectorAll(".tab-btn");
+const tabs = document.querySelectorAll(".tab-pane");
+
+tabBtns.forEach(btn => {
+  btn.onclick = () => {
+    tabBtns.forEach(x => x.classList.remove("active"));
+    btn.classList.add("active");
+
+    tabs.forEach(tab => tab.style.display = "none");
+    document.getElementById(btn.dataset.tab).style.display = "block";
+  };
+});
+
+// ---------------- MENU: HOVER INGREDIENTS --------------
+document.querySelectorAll(".menu-card").forEach(card => {
+  card.onmouseenter = () => {
+    card.querySelector(".ingredients").style.display = "block";
+  };
+  card.onmouseleave = () => {
+    card.querySelector(".ingredients").style.display = "none";
+  };
+});
+
+// ---------------- STAR RATING ----------------
+let selectedRating = 0;
+document.querySelectorAll(".star-input span").forEach(star => {
+  star.onclick = () => {
+    selectedRating = parseInt(star.dataset.star);
+    document.getElementById("rating").value = selectedRating;
+
+    document.querySelectorAll(".star-input span").forEach(s => {
+      s.classList.toggle("active", parseInt(s.dataset.star) <= selectedRating);
+    });
+  };
+});
+
+// ---------------- REVIEWS CRUD ----------------
+const reviewForm = document.getElementById("reviewForm");
+const reviewsList = document.getElementById("reviewsList");
+const sortSelect = document.getElementById("sortReviews");
+
+const cafeKey = `reviews-${cafeName}`;
+
+function loadReviews() {
+  reviewsList.innerHTML = "";
+  let reviews = JSON.parse(localStorage.getItem(cafeKey)) || [];
+
+  // -------- SORTING --------
+  if (sortSelect.value === "latest") {
+    reviews.sort((a, b) => b.time - a.time);
+  } else if (sortSelect.value === "oldest") {
+    reviews.sort((a, b) => a.time - b.time);
+  } else if (sortSelect.value === "highest") {
+    reviews.sort((a, b) => b.rating - a.rating);
+  } else if (sortSelect.value === "lowest") {
+    reviews.sort((a, b) => a.rating - b.rating);
+  }
+
+  // -------- DISPLAY REVIEWS --------
+  reviews.forEach((review, index) => {
+    const card = document.createElement("div");
+    card.className = "review-card";
+
+    card.innerHTML = `
+      <div class="viewMode">
+        <strong>${review.reviewer}</strong>
+        <p>${"★".repeat(review.rating)} (${review.rating}/5)</p>
+        <p>${review.text}</p>
+        <button class="editBtn" data-index="${index}">Edit</button>
+        <button class="deleteBtn" data-index="${index}">Delete</button>
+      </div>
+
+      <div class="editMode" style="display:none">
+        <input type="text" class="editName" value="${review.reviewer}">
+        <input type="number" min="1" max="5" class="editRating" value="${review.rating}">
+        <textarea class="editText">${review.text}</textarea>
+        <button class="saveBtn" data-index="${index}">Save</button>
+        <button class="cancelBtn">Cancel</button>
+      </div>
+    `;
+
+    reviewsList.appendChild(card);
+  });
+
+  attachListeners();
+}
+
+// ------------- ATTACH BUTTON LISTENERS ---------------
+function attachListeners() {
+  document.querySelectorAll(".deleteBtn").forEach(btn => {
+    btn.onclick = () => {
+      const reviews = JSON.parse(localStorage.getItem(cafeKey)) || [];
+      reviews.splice(btn.dataset.index, 1);
+      localStorage.setItem(cafeKey, JSON.stringify(reviews));
+      loadReviews();
+    };
+  });
+
+  document.querySelectorAll(".editBtn").forEach(btn => {
+    btn.onclick = () => {
+      const card = btn.closest(".review-card");
+      card.querySelector(".viewMode").style.display = "none";
+      card.querySelector(".editMode").style.display = "block";
+    };
+  });
+
+  document.querySelectorAll(".cancelBtn").forEach(btn => {
+    btn.onclick = () => {
+      const card = btn.closest(".review-card");
+      card.querySelector(".viewMode").style.display = "block";
+      card.querySelector(".editMode").style.display = "none";
+    };
+  });
+
+  document.querySelectorAll(".saveBtn").forEach(btn => {
+    btn.onclick = () => {
+      const idx = btn.dataset.index;
+      const card = btn.closest(".review-card");
+
+      const updated = {
+        reviewer: card.querySelector(".editName").value,
+        rating: parseInt(card.querySelector(".editRating").value),
+        text: card.querySelector(".editText").value,
+        time: Date.now()
+      };
+
+      const reviews = JSON.parse(localStorage.getItem(cafeKey)) || [];
+      reviews[idx] = updated;
+
+      localStorage.setItem(cafeKey, JSON.stringify(reviews));
+      loadReviews();
+    };
+  });
+}
+
+sortSelect.onchange = loadReviews;
+
+// -------- ADD NEW REVIEW --------
+reviewForm.onsubmit = e => {
+  e.preventDefault();
+
+  const reviewer = document.getElementById("reviewer").value.trim();
+  const rating = selectedRating;
+  const text = document.getElementById("reviewText").value.trim();
+
+  if (!rating) {
+    alert("Please choose a rating!");
+    return;
+  }
+
+  const newReview = {
+    reviewer,
+    rating,
+    text,
+    time: Date.now()
+  };
+
+  const reviews = JSON.parse(localStorage.getItem(cafeKey)) || [];
+  reviews.push(newReview);
+
+  localStorage.setItem(cafeKey, JSON.stringify(reviews));
+  loadReviews();
+
+  reviewForm.reset();
+  selectedRating = 0;
+  document.querySelectorAll(".star-input span").forEach(s => s.classList.remove("active"));
+};
+
+loadReviews();
+</script>
+
+</body>
+</html>
