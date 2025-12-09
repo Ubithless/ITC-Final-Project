@@ -45,6 +45,8 @@ body{
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 12px 36px rgba(0,0,0,0.06);
+    position: relative;
+    z-index: 19;
 }
 
 /* Tooltip on hover */
@@ -82,8 +84,6 @@ body{
 /* responsiveness */
 @media (max-width:980px){
 .page{flex-direction:column;padding:14px}
-/* Adjust map size for smaller screens */
-.map-wrap{height: 400px; margin-top: 20px;}
 }
 
 .back-main-btn {
