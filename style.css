@@ -119,52 +119,24 @@ transform: translateX(-3px);
   margin-top: 30px;
 }
 
-
-.info-layout {
-  display: flex;
-  gap: 30px;
-  align-items: flex-start;
-  margin-top: 20px;
+.facebook-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background: #d8b892;
+    color: white;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Left text area */
-.info-text {
-  flex: 1;
+.facebook-button:hover {
+    background-color: #145dbf;
+    transform: translateY(-2px);
 }
 
-/* Right image column */
-.info-images {
-  width: 280px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* Large main image */
-.cafe-img-large {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 14px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-}
-
-/* Smaller image below */
-.cafe-img-small {
-  width: 100%;
-  height: 110px;
-  object-fit: cover;
-  border-radius: 12px;
-  opacity: 0.95;
-}
-
-/* Responsive fix */
-@media (max-width: 768px) {
-  .info-layout {
-    flex-direction: column;
-  }
-
-  .info-images {
-    width: 100%;
-  }
+.facebook-button:active {
+    transform: translateY(0);
 }
